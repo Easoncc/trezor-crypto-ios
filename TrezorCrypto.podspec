@@ -1,19 +1,21 @@
 Pod::Spec.new do |s|
   s.name             = 'TrezorCrypto'
-  s.version          = '0.0.2'
+  s.version          = '0.0.6'
   s.summary          = 'Heavily optimized cryptography algorithms for iOS.'
 
   s.homepage         = 'https://github.com/TrustWallet/trezor-crypto-ios'
   s.license          = { type: 'MIT', file: 'trezor-crypto/LICENSE' }
   s.authors          = { 'Alejandro Isaza' => 'al@isaza.ca' }
-  s.source           = { git: 'https://github.com/TrustWallet/trezor-crypto-ios.git', tag: s.version, submodules: true }
+  s.source           = { git: 'https://github.com/solrex/trezor-crypto-ios.git', tag: s.version, submodules: true }
   
   s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.10'
 
   s.prepare_command = <<-CMD
-    sed -i '' -e 's:ed25519-donna/::g' ./**/*.c
-    sed -i '' -e 's:ed25519-donna/::g' ./**/*.h
+	git submodule update --init
+sed -i '' -e 's:ed25519-donna/::g' ./**/*.c
+sed -i '' -e 's:ed25519-donna/::g' ./**/*.h
+sed -i '' -e 's:USE_ETHEREUM 0:USE_ETHEREUM 1:g' trezor-crypto/options.h
   CMD
   s.module_map = 'TrezorCrypto.modulemap'
   search_paths = [
@@ -46,7 +48,8 @@ Pod::Spec.new do |s|
     'trezor-crypto/bip39_english.h',
     'trezor-crypto/blake2_common.h',
     'trezor-crypto/check_mem.h',
-    'trezor-crypto/macros.h'
+    'trezor-crypto/macros.h',
+	'trezor-crypto/nem_serialize.h'
   s.exclude_files =
     'trezor-crypto/aes/aestst*.{c,h}',
     'trezor-crypto/gui/*.{c,h}',
